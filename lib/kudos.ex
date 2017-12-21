@@ -16,12 +16,12 @@ defmodule Kudos do
   """  
   def generate do
     content = 
-    load_deps_meta_data()
-    |> Enum.reduce(header(), fn(meta_data, resp) ->
-      resp <> format(meta_data)
-    end)
-    |> String.trim()
-    
+      load_deps_meta_data()
+      |> Enum.reduce(header(), fn(meta_data, resp) ->
+        resp <> format(meta_data)
+      end)
+      |> String.trim()
+
     File.write("licenses.md", content)
   end
 
