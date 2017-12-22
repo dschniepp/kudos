@@ -1,5 +1,7 @@
 # Kudos
 
+[![Build Status](https://travis-ci.org/semlabs/kudos.svg?branch=master)](https://travis-ci.org/semlabs/kudos)
+
 Kudos generates a licenses file in the root dir with the licenses of all dependencies.
 
 ## Installation
