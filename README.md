@@ -16,13 +16,13 @@ end
 
 ## How to use kudos
 
-Print licenses to console:
-
-`mix kudos.generate --dry-run`
-
 Generate _licenses.md_ file in root:
 
 `mix kudos.generate`
+
+Print licenses to console:
+
+`mix kudos.generate --dry-run`
 
 ## Documentation
 
