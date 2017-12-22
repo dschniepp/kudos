@@ -10,19 +10,16 @@ defmodule Kudos do
 
   ## Examples
 
-      iex> Kudos.generate()
-      :ok
+      iex> Kudos.generate() |> String.length()
+      5572
       
   """  
   def generate do
-    content = 
-      load_deps_meta_data()
-      |> Enum.reduce(header(), fn(meta_data, resp) ->
-        resp <> format(meta_data)
-      end)
-      |> String.trim()
-
-    File.write("licenses.md", content)
+    load_deps_meta_data()
+    |> Enum.reduce(header(), fn(meta_data, resp) ->
+      resp <> format(meta_data)
+    end)
+    |> String.trim()
   end
 
   defp header() do

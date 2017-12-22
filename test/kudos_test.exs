@@ -3,6 +3,6 @@ defmodule KudosTest do
   doctest Kudos
 
   test "write file test" do
-    assert Kudos.generate() == :ok
+    assert String.length(Kudos.generate()) > 0
   end
 end

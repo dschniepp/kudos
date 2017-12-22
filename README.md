@@ -1,5 +1,7 @@
 # Kudos
 
+[![Build Status](https://travis-ci.org/semlabs/kudos.svg?branch=master)](https://travis-ci.org/semlabs/kudos)
+
 Kudos generates a licenses file in the root dir with the licenses of all dependencies.
 
 ## Installation
@@ -12,6 +14,16 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/kudos](https://hexdocs.pm/kudos).
+## How to use kudos
+
+Generate _licenses.md_ file in root:
+
+`mix kudos.generate`
+
+Print licenses to console:
+
+`mix kudos.generate --dry-run`
+
+## Documentation
+
+[https://hexdocs.pm/kudos](https://hexdocs.pm/kudos).
