@@ -2,7 +2,7 @@ defmodule Kudos do
   @moduledoc """
   Documentation for Kudos.
   """
-  
+
   @license_file_names ~w(LICENSE.txt LICENSE.md LICENSE license.txt license.md license LICENSE-2.0.txt)
 
   @doc """
@@ -11,9 +11,9 @@ defmodule Kudos do
   ## Examples
 
       iex> Kudos.generate() |> String.length()
-      5572
-      
-  """  
+      5882
+
+  """
   def generate do
     load_deps_meta_data()
     |> Enum.reduce(header(), fn(meta_data, resp) ->
@@ -33,7 +33,7 @@ defmodule Kudos do
 
   defp format(meta_data) do
     """
-    ### #{meta_data.name} (Version #{meta_data.version} | Checksum: #{meta_data.checksum})
+    ### #{meta_data.name} (Version #{meta_data.version} | Checksum: #{checksum(meta_data.checksum)})
     #{meta_data.description}
 
     Links: #{links(meta_data.links)}
@@ -46,14 +46,38 @@ defmodule Kudos do
     """
   end
 
-  defp maintainers(values) do
+  defp checksum(value) when is_list(value) do
+    value[:branch]
+  end
+  defp checksum(value) do
+    value
+  end
+
+  defp maintainers(values) when is_nil(values) do
+    ""
+  end
+  defp maintainers(values) when is_map(values) do
+    Map.to_list(values)
+    |> maintainers()
+  end
+  defp maintainers(values) when is_list(values) do
     Enum.join(values, ", ")
   end
 
-  defp links(values) do
-    values
-    |> Enum.map(fn(value) -> "[#{elem(value, 0)}](#{elem(value, 1)})" end)
+  defp links(values) when is_nil(values) do
+    ""
+  end
+  defp links(values) when is_map(values) do
+    Map.to_list(values)
+    |> Enum.map(&prepare_link(&1))
     |> Enum.join(", ")
+  end
+
+  defp prepare_link(value) when is_tuple(value) do
+    "[#{elem(value, 0)}](#{elem(value, 1)})"
+  end
+  defp prepare_link({key, value}) do
+    "[#{key}](#{value})"
   end
 
   defp load_deps_meta_data() do

@@ -4,7 +4,7 @@ defmodule Kudos.Mixfile do
   def project do
     [
       app: :kudos,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       description: description(),
@@ -25,7 +25,8 @@ defmodule Kudos.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, "~> 0.16", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.16", only: :dev, runtime: false},
+      {:decimal, "~> 1.0"}
     ]
   end
 
@@ -35,7 +36,7 @@ defmodule Kudos.Mixfile do
 
   defp package() do
     [
-      files: ["lib", "priv", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Daniel Schniepp"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/semlabs/kudos"}
