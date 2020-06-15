@@ -2,7 +2,7 @@ defmodule Mix.Tasks.Kudos.Generate do
     use Mix.Task
   
     @shortdoc "Generates a licenses file"
-    @recursive true
+    @recursive false
 
     def run(args \\ []) do
       IO.puts("Generating Licenses file...")

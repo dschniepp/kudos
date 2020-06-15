@@ -11,7 +11,7 @@ defmodule Kudos do
   ## Examples
 
       iex> Kudos.generate() |> String.length()
-      8174
+      529
 
   """
   def generate do
@@ -31,6 +31,12 @@ defmodule Kudos do
     """
   end
 
+  defp format(:umbrella) do
+  ""
+  end
+  defp format(:dev) do
+  ""
+  end
   defp format(meta_data) do
     """
     ### #{meta_data.name} (Version #{meta_data.version} | Checksum: #{checksum(meta_data.checksum)})
@@ -84,19 +90,42 @@ defmodule Kudos do
     Mix.Dep.load_on_environment([])
     |> Enum.map(fn(dep) ->
       Mix.Dep.in_dependency(dep, fn _ ->
-        %{
-          name: Atom.to_string(Mix.Project.config[:app]),
-          version: Mix.Project.config[:version],
-          checksum: elem(dep.opts[:lock], 3),
-          description: Mix.Project.config[:description],
-          source_url: Mix.Project.config[:source_url],
-          links: get_in(Mix.Project.config, [:package, :links]),
-          maintainers: get_in(Mix.Project.config, [:package, :maintainers]),
-          licenses: get_in(Mix.Project.config, [:package, :licenses]),
-          license_file: get_license_file_content(dep.opts[:dest])
-        }
+      case is_umbrella?(dep) do
+        true -> :umbrella
+        false ->
+          case is_prod?(dep) do
+            false -> :dev
+            _ ->
+              %{
+              name: Atom.to_string(Mix.Project.config[:app]),
+              version: Mix.Project.config[:version],
+              checksum: elem(dep.opts[:lock], 3),
+              description: Mix.Project.config[:description],
+              source_url: Mix.Project.config[:source_url],
+              links: get_in(Mix.Project.config, [:package, :links]),
+              maintainers: get_in(Mix.Project.config, [:package, :maintainers]),
+              licenses: get_in(Mix.Project.config, [:package, :licenses]),
+              license_file: get_license_file_content(dep.opts[:dest])
+            }
+          end
+        end
       end)
     end)
+  end
+
+  defp is_umbrella?(dep) do
+      case List.keyfind(dep.opts, :from_umbrella, 0, {:from_umbrella, false}) do
+        {:from_umbrella, true} -> true
+        {:from_umbrella, false} -> false
+      end
+  end
+
+  defp is_prod?(dep) do
+    only = List.keyfind(dep.opts, :only, 0, [])
+    case only do
+      [] -> true
+      _ -> false
+    end
   end
 
   defp get_license_file_content(path) do
