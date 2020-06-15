@@ -11,7 +11,7 @@ defmodule Kudos do
   ## Examples
 
       iex> Kudos.generate() |> String.length()
-      5882
+      8174
 
   """
   def generate do
@@ -81,7 +81,7 @@ defmodule Kudos do
   end
 
   defp load_deps_meta_data() do
-    Mix.Dep.loaded([])
+    Mix.Dep.load_on_environment([])
     |> Enum.map(fn(dep) ->
       Mix.Dep.in_dependency(dep, fn _ ->
         %{
