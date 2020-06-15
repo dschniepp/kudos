@@ -81,7 +81,7 @@ defmodule Kudos do
   end
 
   defp load_deps_meta_data() do
-    Mix.Dep.loaded([])
+    Mix.Dep.load_on_environment([])
     |> Enum.map(fn(dep) ->
       Mix.Dep.in_dependency(dep, fn _ ->
         %{
