@@ -1,3 +1,11 @@
 language: elixir
-elixir: '1.5.2'
-otp_release: '19.0'
+elixir:
+  - '1.9.0'
+  - '1.10.0'
+  - 'latest'
+otp_release:
+  - '20.0'
+  - '21.0'
+  - '22.0'
+  - '23.0'
+  - 'latest'
