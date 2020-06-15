@@ -11,7 +11,7 @@ defmodule Kudos do
   ## Examples
 
       iex> Kudos.generate() |> String.length()
-      5882
+      8174
 
   """
   def generate do
