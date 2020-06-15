@@ -4,14 +4,14 @@ defmodule Kudos.Mixfile do
   def project do
     [
       app: :kudos,
-      version: "0.1.1",
+      version: "0.2.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env == :prod,
       description: description(),
       package: package(),
       deps: deps(),
       name: "Kudos",
-      source_url: "https://github.com/semlabs/kudos"
+      source_url: "https://github.com/dschniepp/kudos"
     ]
   end
 
