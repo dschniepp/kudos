@@ -39,7 +39,7 @@ defmodule Kudos.Mixfile do
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Daniel Schniepp"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/semlabs/kudos"}
+      links: %{"GitHub" => "https://github.com/dschniepp/kudos"}
     ]
   end
 end
