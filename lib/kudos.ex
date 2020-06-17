@@ -114,10 +114,17 @@ defmodule Kudos do
   end
 
   defp is_umbrella?(dep) do
-      case List.keyfind(dep.opts, :from_umbrella, 0, {:from_umbrella, false}) do
-        {:from_umbrella, true} -> true
-        {:from_umbrella, false} -> false
-      end
+    case List.keyfind(dep.opts, :in_umbrella, 0, {:in_umbrella, false}) do
+      {:in_umbrella, true} -> true
+      {:in_umbrella, false} -> from_umbrella?(dep)
+    end
+  end
+
+  defp from_umbrella?(dep) do
+    case List.keyfind(dep.opts, :from_umbrella, 0, {:from_umbrella, false}) do
+      {:from_umbrella, true} -> true
+      {:from_umbrella, false} -> false
+    end
   end
 
   defp is_prod?(dep) do
