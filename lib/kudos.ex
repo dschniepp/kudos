@@ -12,7 +12,7 @@ defmodule Kudos do
   ## Examples
 
       iex> Kudos.generate() |> String.length()
-      529
+      1080
 
   """
   def generate do
@@ -48,7 +48,9 @@ defmodule Kudos do
     Maintainers: #{maintainers(meta_data.maintainers)}
 
     Licenses Used: #{meta_data.licenses}
+    ```
     #{meta_data.license_file}
+    ```
     """
   end
 
