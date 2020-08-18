@@ -4,7 +4,7 @@ defmodule Kudos do
   """
 
   @license_file_names ~w(LICENSE.txt LICENSE.md LICENSE license.txt license.md license LICENSE-2.0.txt)
-  @readme_file_names ~w(README.md)
+  @readme_file_names ~w(README.md README.markdown)
 
   @doc """
   Generates a licenses file in the root dir with the licenses of all deps.
