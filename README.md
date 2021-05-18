@@ -1,6 +1,6 @@
 # Kudos
 
-[![Build Status](https://travis-ci.org/semlabs/kudos.svg?branch=master)](https://travis-ci.org/semlabs/kudos)
+![Elixir CI](https://github.com/dschniepp/kudos/workflows/Elixir%20CI/badge.svg)
 
 Kudos generates a licenses file in the root dir with the licenses of all dependencies.
 
@@ -9,7 +9,7 @@ Kudos generates a licenses file in the root dir with the licenses of all depende
 ```elixir
 def deps do
   [
-    {:kudos, "~> 0.1.0"}
+    {:kudos, "~> 0.2.0"}
   ]
 end
 ```
