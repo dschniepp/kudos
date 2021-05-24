@@ -12,7 +12,7 @@ defmodule Kudos do
   ## Examples
 
       iex> Kudos.generate() |> String.length()
-      1080
+      219
 
   """
   def generate do
@@ -161,7 +161,7 @@ defmodule Kudos do
   defp read_license_from_readme_file([first_file_name | _], path) do
     readme_content = Path.join(path, first_file_name)
     |> File.read!()
-    
+
     case String.split(readme_content, "# License", parts: 2) do
       [_, content] ->
         content
