@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        fail-fast: false
         elixir-version: ['1.8', '1.9', '1.10', '1.11', '1.12']
         otp-version: ['21.0', '22.0', '23.0', '24.0']
 
