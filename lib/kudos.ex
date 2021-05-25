@@ -52,7 +52,6 @@ defmodule Kudos do
     Licenses Used: #{meta_data.licenses}
 
     #{meta_data.license_file}
-
     """
   end
 
