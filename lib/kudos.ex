@@ -4,6 +4,7 @@ defmodule Kudos do
   """
 
   @license_file_names ~w(LICENSE.txt LICENSE.md LICENSE license.txt license.md license LICENSE-2.0.txt)
+  @readme_file_names ~w(README.md README.markdown)
 
   @doc """
   Generates a licenses file in the root dir with the licenses of all deps.
@@ -11,7 +12,7 @@ defmodule Kudos do
   ## Examples
 
       iex> Kudos.generate() |> String.length()
-      18500
+      219
 
   """
   def generate do
@@ -152,12 +153,35 @@ defmodule Kudos do
     |> read_license_file(path)
   end
 
-  defp read_license_file([], _path) do
-    "Full license text not found in dependency source."
+  defp read_license_file([], path) do
+    read_license_from_readme_file(path)
   end
 
   defp read_license_file([first_file_name | _], path) do
     Path.join(path, first_file_name)
     |> File.read!()
+  end
+
+  defp read_license_from_readme_file(path) do
+    files = File.ls!(path) -- File.ls!(path) -- @readme_file_names
+    read_license_from_readme_file(files, path)
+  end
+
+  defp read_license_from_readme_file([], _path) do
+    "Full license text not found in dependency source."
+  end
+
+  defp read_license_from_readme_file([first_file_name | _], path) do
+    readme_content =
+      Path.join(path, first_file_name)
+      |> File.read!()
+
+    case String.split(readme_content, "# License", parts: 2) do
+      [_, content] ->
+        content
+
+      _ ->
+        "Full license text not found in dependency source."
+    end
   end
 end
