@@ -50,9 +50,9 @@ defmodule Kudos do
     Maintainers: #{maintainers(meta_data.maintainers)}
 
     Licenses Used: #{meta_data.licenses}
-    ```
+
     #{meta_data.license_file}
-    ```
+
     """
   end
 
@@ -164,21 +164,25 @@ defmodule Kudos do
   end
 
   defp read_license_from_readme_file(path) do
-    files = File.ls!(path) -- (File.ls!(path) -- @readme_file_names)
+    files = File.ls!(path) -- File.ls!(path) -- @readme_file_names
     read_license_from_readme_file(files, path)
   end
 
   defp read_license_from_readme_file([], _path) do
     "Full license text not found in dependency source."
   end
+
   defp read_license_from_readme_file([first_file_name | _], path) do
-    readme_content = Path.join(path, first_file_name)
-    |> File.read!()
+    readme_content =
+      Path.join(path, first_file_name)
+      |> File.read!()
 
     case String.split(readme_content, "# License", parts: 2) do
       [_, content] ->
         content
-      _ -> "Full license text not found in dependency source."
+
+      _ ->
+        "Full license text not found in dependency source."
     end
   end
 end
