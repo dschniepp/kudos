@@ -5,8 +5,8 @@ defmodule Kudos.Mixfile do
     [
       app: :kudos,
       version: "0.2.0",
-      elixir: "~> 1.8",
-      start_permanent: Mix.env == :prod,
+      elixir: "~> 1.7",
+      start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
       deps: deps(),

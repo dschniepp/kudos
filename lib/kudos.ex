@@ -16,7 +16,7 @@ defmodule Kudos do
   """
   def generate do
     load_deps_meta_data()
-    |> Enum.reduce(header(), fn(meta_data, resp) ->
+    |> Enum.reduce(header(), fn meta_data, resp ->
       resp <> format(meta_data)
     end)
     |> String.trim()
@@ -29,6 +29,14 @@ defmodule Kudos do
 
     ## Dependencies
     """
+  end
+
+  defp format(:umbrella) do
+    ""
+  end
+
+  defp format(:dev) do
+    ""
   end
 
   defp format(meta_data) do
@@ -49,6 +57,7 @@ defmodule Kudos do
   defp checksum(value) when is_list(value) do
     value[:branch]
   end
+
   defp checksum(value) do
     value
   end
@@ -56,10 +65,12 @@ defmodule Kudos do
   defp maintainers(values) when is_nil(values) do
     ""
   end
+
   defp maintainers(values) when is_map(values) do
     Map.to_list(values)
     |> maintainers()
   end
+
   defp maintainers(values) when is_list(values) do
     Enum.join(values, ", ")
   end
@@ -67,6 +78,7 @@ defmodule Kudos do
   defp links(values) when is_nil(values) do
     ""
   end
+
   defp links(values) when is_map(values) do
     Map.to_list(values)
     |> Enum.map(&prepare_link(&1))
@@ -76,37 +88,74 @@ defmodule Kudos do
   defp prepare_link(value) when is_tuple(value) do
     "[#{elem(value, 0)}](#{elem(value, 1)})"
   end
+
   defp prepare_link({key, value}) do
     "[#{key}](#{value})"
   end
 
   defp load_deps_meta_data() do
     Mix.Dep.load_on_environment([])
-    |> Enum.map(fn(dep) ->
+    |> Enum.map(fn dep ->
       Mix.Dep.in_dependency(dep, fn _ ->
-        %{
-          name: Atom.to_string(Mix.Project.config[:app]),
-          version: Mix.Project.config[:version],
-          checksum: elem(dep.opts[:lock], 3),
-          description: Mix.Project.config[:description],
-          source_url: Mix.Project.config[:source_url],
-          links: get_in(Mix.Project.config, [:package, :links]),
-          maintainers: get_in(Mix.Project.config, [:package, :maintainers]),
-          licenses: get_in(Mix.Project.config, [:package, :licenses]),
-          license_file: get_license_file_content(dep.opts[:dest])
-        }
+        case is_umbrella?(dep) do
+          true ->
+            :umbrella
+
+          false ->
+            case is_prod?(dep) do
+              false ->
+                :dev
+
+              _ ->
+                %{
+                  name: Atom.to_string(Mix.Project.config()[:app]),
+                  version: Mix.Project.config()[:version],
+                  checksum: elem(dep.opts[:lock], 3),
+                  description: Mix.Project.config()[:description],
+                  source_url: Mix.Project.config()[:source_url],
+                  links: get_in(Mix.Project.config(), [:package, :links]),
+                  maintainers: get_in(Mix.Project.config(), [:package, :maintainers]),
+                  licenses: get_in(Mix.Project.config(), [:package, :licenses]),
+                  license_file: get_license_file_content(dep.opts[:dest])
+                }
+            end
+        end
       end)
     end)
   end
 
+  defp is_umbrella?(dep) do
+    case List.keyfind(dep.opts, :in_umbrella, 0, {:in_umbrella, false}) do
+      {:in_umbrella, true} -> true
+      {:in_umbrella, false} -> from_umbrella?(dep)
+    end
+  end
+
+  defp from_umbrella?(dep) do
+    case List.keyfind(dep.opts, :from_umbrella, 0, {:from_umbrella, false}) do
+      {:from_umbrella, true} -> true
+      {:from_umbrella, false} -> false
+    end
+  end
+
+  defp is_prod?(dep) do
+    only = List.keyfind(dep.opts, :only, 0, [])
+
+    case only do
+      [] -> true
+      _ -> false
+    end
+  end
+
   defp get_license_file_content(path) do
-    File.ls!(path) -- (File.ls!(path) -- @license_file_names)
+    (File.ls!(path) -- File.ls!(path) -- @license_file_names)
     |> read_license_file(path)
   end
 
   defp read_license_file([], _path) do
     "Full license text not found in dependency source."
   end
+
   defp read_license_file([first_file_name | _], path) do
     Path.join(path, first_file_name)
     |> File.read!()
