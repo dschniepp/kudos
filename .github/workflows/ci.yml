@@ -37,3 +37,9 @@ jobs:
         if: ${{ matrix.lint }}
 
       - run: mix test
+
+      - run: mix kudos.generate
+
+      - run: mix kudos.generate --dry-run
+
+      - run: mix kudos.generate --include-dev-deps

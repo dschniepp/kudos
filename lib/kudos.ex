@@ -14,9 +14,15 @@ defmodule Kudos do
       iex> Kudos.generate() |> String.length()
       219
 
+      iex> Kudos.generate(false) |> String.length()
+      219
+
+      iex> Kudos.generate(true) |> String.length()
+      19050
+
   """
-  def generate do
-    load_deps_meta_data()
+  def generate(include_dev_deps \\ false) do
+    load_deps_meta_data(include_dev_deps)
     |> Enum.reduce(header(), fn meta_data, resp ->
       resp <> format(meta_data)
     end)
@@ -94,7 +100,7 @@ defmodule Kudos do
     "[#{key}](#{value})"
   end
 
-  defp load_deps_meta_data() do
+  defp load_deps_meta_data(include_dev_deps) do
     Mix.Dep.load_on_environment([])
     |> Enum.map(fn dep ->
       Mix.Dep.in_dependency(dep, fn _ ->
@@ -103,7 +109,7 @@ defmodule Kudos do
             :umbrella
 
           false ->
-            case is_prod?(dep) do
+            case is_prod?(dep) || include_dev_deps do
               false ->
                 :dev
 
