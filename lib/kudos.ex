@@ -109,7 +109,7 @@ defmodule Kudos do
             :umbrella
 
           false ->
-            case is_prod?(dep) || include_dev_deps do
+            case include_dev_deps || is_prod?(dep) do
               false ->
                 :dev
 
