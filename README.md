@@ -9,7 +9,7 @@ Kudos generates a licenses file in the root dir with the licenses of all depende
 ```elixir
 def deps do
   [
-    {:kudos, "~> 0.2.0"}
+    {:kudos, "~> 0.3.0"}
   ]
 end
 ```
