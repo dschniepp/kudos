@@ -24,6 +24,10 @@ Print licenses to console:
 
 `mix kudos.generate --dry-run`
 
+Including dev dependencies:
+
+`mix kudos.generate --include-dev-deps`
+
 ## Documentation
 
 [https://hexdocs.pm/kudos](https://hexdocs.pm/kudos).
