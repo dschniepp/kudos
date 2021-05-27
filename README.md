@@ -9,7 +9,7 @@ Kudos generates a licenses file in the root dir with the licenses of all depende
 ```elixir
 def deps do
   [
-    {:kudos, "~> 0.2.0"}
+    {:kudos, "~> 0.3.0"}
   ]
 end
 ```
@@ -23,6 +23,10 @@ Generate _licenses.md_ file in root:
 Print licenses to console:
 
 `mix kudos.generate --dry-run`
+
+Including dev dependencies:
+
+`mix kudos.generate --include-dev-deps`
 
 ## Documentation
 

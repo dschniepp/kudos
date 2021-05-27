@@ -11,12 +11,15 @@ defmodule Kudos do
 
   ## Examples
 
-      iex> Kudos.generate() |> String.length()
+      iex> Kudos.generate(false) |> String.length()
       219
 
+      iex> Kudos.generate(true) |> String.length()
+      19050
+
   """
-  def generate do
-    load_deps_meta_data()
+  def generate(include_dev_deps \\ false) do
+    load_deps_meta_data(include_dev_deps)
     |> Enum.reduce(header(), fn meta_data, resp ->
       resp <> format(meta_data)
     end)
@@ -95,7 +98,7 @@ defmodule Kudos do
     "[#{key}](#{value})"
   end
 
-  defp load_deps_meta_data() do
+  defp load_deps_meta_data(include_dev_deps) do
     Mix.Dep.load_on_environment([])
     |> Enum.map(fn dep ->
       Mix.Dep.in_dependency(dep, fn _ ->
@@ -104,7 +107,7 @@ defmodule Kudos do
             :umbrella
 
           false ->
-            case is_prod?(dep) do
+            case include_dev_deps || is_prod?(dep) do
               false ->
                 :dev
 
@@ -164,21 +167,25 @@ defmodule Kudos do
   end
 
   defp read_license_from_readme_file(path) do
-    files = File.ls!(path) -- (File.ls!(path) -- @readme_file_names)
+    files = File.ls!(path) -- File.ls!(path) -- @readme_file_names
     read_license_from_readme_file(files, path)
   end
 
   defp read_license_from_readme_file([], _path) do
     "Full license text not found in dependency source."
   end
+
   defp read_license_from_readme_file([first_file_name | _], path) do
-    readme_content = Path.join(path, first_file_name)
-    |> File.read!()
+    readme_content =
+      Path.join(path, first_file_name)
+      |> File.read!()
 
     case String.split(readme_content, "# License", parts: 2) do
       [_, content] ->
         content
-      _ -> "Full license text not found in dependency source."
+
+      _ ->
+        "Full license text not found in dependency source."
     end
   end
 end

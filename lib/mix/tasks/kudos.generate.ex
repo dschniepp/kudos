@@ -8,7 +8,8 @@ defmodule Mix.Tasks.Kudos.Generate do
     IO.puts("Generating Licenses file...")
 
     resp =
-      Kudos.generate()
+      include_dev_deps?(args)
+      |> Kudos.generate()
       |> handle_licenses(dry_run?(args))
 
     case resp do
@@ -28,5 +29,9 @@ defmodule Mix.Tasks.Kudos.Generate do
 
   defp dry_run?(args) do
     Enum.member?(args, "--dry-run")
+  end
+
+  defp include_dev_deps?(args) do
+    Enum.member?(args, "--include-dev-deps")
   end
 end
