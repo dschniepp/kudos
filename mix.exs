@@ -30,7 +30,7 @@ defmodule Kudos.Mixfile do
   end
 
   defp description() do
-    "Fetches licenses of deps and generates a stashed license file in the root directory."
+    "Kudos generates a `licenses.md` file in the root dir including the licenses of all dependencies."
   end
 
   defp package() do
