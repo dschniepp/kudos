@@ -11,6 +11,9 @@ defmodule Kudos do
 
   ## Examples
 
+      iex> Kudos.generate() |> String.length()
+      219
+
       iex> Kudos.generate(false) |> String.length()
       219
 
@@ -53,9 +56,7 @@ defmodule Kudos do
     Maintainers: #{maintainers(meta_data.maintainers)}
 
     Licenses Used: #{meta_data.licenses}
-    ```
     #{meta_data.license_file}
-    ```
     """
   end
 
